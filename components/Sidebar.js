@@ -6,19 +6,23 @@ import { MdGroups } from 'react-icons/md'
 import { AiOutlineShop } from 'react-icons/ai'
 import { MdOutlineOndemandVideo, MdOutlineExpandMore } from 'react-icons/md'
 import { BsStopwatch } from 'react-icons/bs'
+import { useSession } from 'next-auth/react'
 
 const SideBar = () => {
+  const { data: session, status } = useSession()
   return (
     <div className='hidden lg:inline-flex flex-col py-2 pl-2 max-w-xl lg:min-w-[320px]'>
       <div className='flex items-center space-x-2 py-3 pl-4  hover:bg-gray-200 rounded-l-xl cursor-pointer '>
         <Image
-          src='https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Eo_circle_deep-orange_letter-s.svg/1024px-Eo_circle_deep-orange_letter-s.svg.png'
-          alt='logo'
+          src={session?.user.image}
+          alt="Profile pic"
           height={40}
           width={40}
           className='rounded-full cursor-pointer'
         />
-        <p className='hidden sm:inline-flex font-medium'>Priyadarsh</p>
+        <p className='hidden sm:inline-flex font-medium'>
+          {session?.user.name}
+        </p>
       </div>
       <SidebarItem Icon={ImUsers} value='Friends' />
       <SidebarItem Icon={MdGroups} value='Groups' />

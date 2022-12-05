@@ -6,7 +6,10 @@ import { AiFillMessage, AiFillBell, AiOutlineShop } from 'react-icons/ai'
 import { MdOutlineExpandMore, MdOutlineOndemandVideo } from 'react-icons/md'
 import { RiFlag2Line } from 'react-icons/ri'
 import { IoGameControllerOutline } from 'react-icons/io5'
+import { useSession, signOut } from 'next-auth/react'
+
 const Header = () => {
+  const { data: session, status } = useSession()
   return (
     <div className='bg-white flex items-center p-2 shadow-md top-0 sticky z-50 h-16'>
       <div className='flex min-w-fit'>
@@ -54,14 +57,15 @@ const Header = () => {
 
       <div className='flex items-center space-x-2 justify-end min-w-fit'>
         <Image
-          src='https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Eo_circle_deep-orange_letter-s.svg/1024px-Eo_circle_deep-orange_letter-s.svg.png'
+          src = {session?.user.image}
           alt='Profile picture'
           height={40}
           width={40}
           className='rounded-full cursor-pointer'
+          onClick = {signOut}
         />
         <p className='hidden xl:inline-flex font-semibold text-sm whitespace-nowrap p-3 max-w-xs'>
-          Priyadarsh
+          {session?.user.name}
         </p>
         <CgMenuGridO
           size={20}
