@@ -6,36 +6,31 @@ import { RiShareForwardLine } from 'react-icons/ri'
 import { HiOutlineSave } from 'react-icons/hi'
 import { FiHeart } from 'react-icons/Fi'
 
-const Post = () => {
+const Post = ({ post }) => {
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col' key={post.id}>
       <div className='bg-white mt-6 rounded-md p-4'>
         <div className='flex items-center space-x-2'>
-          <Image
-            src='https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Eo_circle_deep-orange_letter-s.svg/1024px-Eo_circle_deep-orange_letter-s.svg.png'
-            alt='Profile pic'
-            width='100'
-            height='100'
-            className='rounded-full w-10 h-10'
-          />
+{          // eslint-disable-next-line @next/next/no-img-element
+}          <img src={post.profilePic} alt='Profile pic' className='rounded-full w-10 h-10' />
+
           <div>
-            <p className='font-medium'>Priyadarsh</p>
-            <p className='text-xs text-gray-500'>{new Date().toLocaleString()}</p>
+            <p className='font-medium'>{post.name}</p>
+            <p className='text-xs text-gray-500'>{post.timeStamp}</p>
           </div>
         </div>
-        <p className='py-4'>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        </p>
+        <p className='py-4'>{post.post}</p>
       </div>
-      <div className='relative h-60 md:h-96 bg-white'>
-        <Image
-          src='https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Eo_circle_deep-orange_letter-s.svg/1024px-Eo_circle_deep-orange_letter-s.svg.png'
-          alt='Post Image'
-          className='rounded-full w-10 h-10'
-          objectFit='cover'
-          layout='fill'
-        ></Image>
-      </div>
+      {post.image && (
+        <div className='relative h-60 md:h-96 bg-white'>
+          <Image
+            src={post.image}
+            alt='Image'
+            objectFit='cover'
+            layout='fill'
+          ></Image>
+        </div>
+      )}
       {/* Footer */}
       <div className='flex items-center justify-center bg-white p-2'>
         <div className='flex items-center space-x-1 hover:bg-gray-100 flex-grow justify-center p-2 rounded-xl cursor-pointer'>

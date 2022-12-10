@@ -1,35 +1,24 @@
-import { useSession } from 'next-auth/react'
 import Image from 'next/image'
+import { React, useState, useRef } from 'react'
 import { HiOutlineVideoCamera } from 'react-icons/hi'
 import { IoMdPhotos } from 'react-icons/io'
 import { BsEmojiSmile } from 'react-icons/bs'
-import { RiDeleteBin6Line, RiMapPin5Fill } from 'react-icons/ri'
-import { FiPaperclip } from 'react-icons/Fi'
-import { useRef, useState } from 'react'
+import { useSession } from 'next-auth/react'
+import { RiDeleteBin6Line } from 'react-icons/ri'
+import axios from 'axios'
+import { addPost, selectPost } from '../public/src/features/postSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 const CreatePost = () => {
   const SOCIOPAD_ENDPOINT = 'http://localhost:8080/api/v1/post'
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
+  const dispatch = useDispatch()
   const inputRef = useRef(null)
   const hiddenFileInput = useRef(null)
   const [imageToPost, setImageToPost] = useState(null)
 
   const handleClick = () => {
     hiddenFileInput.current.click()
-  }
-
-  const addImageToPost = (e) => {
-    const reader = new FileReader()
-    if (e.target.files[0]) {
-      reader.readAsDataURL(e.target.files[0])
-      reader.onload = (e) => {
-        setImageToPost(e.target.result)
-      }
-    }
-  }
-
-  const removeImage = () => {
-    setImageToPost(null)
   }
 
   const handleSubmit = (e) => {
@@ -59,12 +48,26 @@ const CreatePost = () => {
       })
   }
 
+  const addImageToPost = (e) => {
+    const reader = new FileReader()
+    if (e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0])
+      reader.onload = (e) => {
+        setImageToPost(e.target.result)
+      }
+    }
+  }
+
+  const removeImage = () => {
+    setImageToPost(null)
+  }
+
   return (
     <div className='bg-white rounded-md shadow-md text-gray-500 p-2 divide-y'>
       <div className='flex p-4 space-x-2 items-center'>
         <Image
           src={session?.user.image}
-          alt='Profile pic'
+          alt='Image'
           height={40}
           width={40}
           className='rounded-full cursor-pointer'
@@ -84,28 +87,23 @@ const CreatePost = () => {
       {imageToPost && (
         <div
           onClick={removeImage}
-          className='flex items-center px-4 py-2 space-x-4 filter hover:brightness-110 transition duration-150 cursor-pointer justify-center'
+          className='flex items-center px-4 py-2 space-x-4 filter hover:brightness-110 transition duration-150 cursor-pointer'
         >
-          <Image
-            src={imageToPost}
-            alt='Image'
-            width='100'
-            height='200'
-            className='object-contain'
-          />
+{          // eslint-disable-next-line @next/next/no-img-element
+}          <img src={imageToPost} alt='Image' className='h-10 object-contain' />
           <RiDeleteBin6Line className='h-8 hover:text-red-500' />
         </div>
       )}
       <div className='flex justify-evenly py-2'>
         <div className='flex items-center p-1 space-x-1 flex-grow justify-center hover:cursor-pointer hover:bg-gray-100 rounded-md'>
-          <HiOutlineVideoCamera className='text-orange-600' size={20} />
+          <HiOutlineVideoCamera className='text-red-500' size={20} />
           <p className='font-semibold text-gray-600'>Live Video</p>
         </div>
         <div
-          className='flex items-center p-1 space-x-1 flex-grow justify-center hover:cursor-pointer hover:bg-gray-100 rounded-md'
           onClick={handleClick}
+          className='flex items-center p-1 space-x-1 flex-grow justify-center hover:cursor-pointer hover:bg-gray-100 rounded-md'
         >
-          <IoMdPhotos className='text-orange-500' size={20} />
+          <IoMdPhotos className='text-green-500' size={20} />
           <p className='font-semibold text-gray-600'>Photo/Video</p>
           <input
             ref={hiddenFileInput}
@@ -116,12 +114,8 @@ const CreatePost = () => {
           />
         </div>
         <div className='flex items-center p-1 space-x-1 flex-grow justify-center hover:cursor-pointer hover:bg-gray-100 rounded-md'>
-          <RiMapPin5Fill className='text-orange-500' size={20} />
-          <p className='font-semibold text-gray-600'>Share Live Location</p>
-        </div>
-        <div className='flex items-center p-1 space-x-1 flex-grow justify-center hover:cursor-pointer hover:bg-gray-100 rounded-md'>
-          <FiPaperclip className='text-orange-600' size={20} />
-          <p className='font-semibold text-gray-600'>Attach File</p>
+          <BsEmojiSmile className='text-yellow-400' size={20} />
+          <p className='font-semibold text-gray-600'>Feeling/Activity</p>
         </div>
       </div>
     </div>
