@@ -1,3 +1,6 @@
+# Sociopad Landing Page
+![sociopad](https://user-images.githubusercontent.com/58765597/230361199-c91d929d-95ee-4a6a-a742-5822e1503bb6.png)
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
